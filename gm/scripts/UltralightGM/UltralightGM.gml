@@ -7,6 +7,7 @@ enum UltralightButton {
 
 globalvar __ultralight_views; __ultralight_views = [];
 globalvar __ultralight_autofocus; __ultralight_autofocus = true;
+globalvar __ultralight_binding; __ultralight_binding = ds_map_create();
 globalvar __ultralight_keylist; __ultralight_keylist = [
 	vk_tab,
 	vk_left,
@@ -25,7 +26,10 @@ globalvar __ultralight_keylist; __ultralight_keylist = [
 	vk_escape,
 	vk_control,
 	vk_lcontrol,
-	vk_rcontrol
+	vk_rcontrol,
+	ord("C"),
+	ord("V"),
+	ord("Z"),
 ];
 globalvar __ultralight_keybuffer; __ultralight_keybuffer = buffer_create(array_length(__ultralight_keylist), buffer_fast, 1);
 function ultralight_view_create( _width, _height, _transparent, _session ) {
@@ -103,7 +107,8 @@ function ultralight_view_focus( _view, _focus, _removeall ) {
 }
 
 function ultralight_view_bind( _view, _func, _callback ) {
-		
+	__ultralight_binding[? _func] = [method_get_index(_callback), _view];
+	__ultralight_view_bind(_view.view, _func);
 }
 
 function ultralight_update( _mx, _my ) {

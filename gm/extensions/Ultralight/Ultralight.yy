@@ -83,7 +83,18 @@
             2,
             1,
           ],"resourceVersion":"1.0","name":"ultralight_view_eval","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"RegisterCallbacks","kind":4,"help":"RegisterCallbacks()","hidden":false,"returnType":1,"argCount":0,"args":[
+            1,
+            1,
+            1,
+            1,
+          ],"resourceVersion":"1.0","name":"RegisterCallbacks","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"ultralight_view_bind","kind":4,"help":"__ultralight_view_bind( _view, _func )","hidden":false,"returnType":2,"argCount":0,"args":[
+            2,
+            1,
+          ],"resourceVersion":"1.0","name":"__ultralight_view_bind","tags":[],"resourceType":"GMExtensionFunction",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
+        {"name":"RegisterCallbacks","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"ultralight_init","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"ultralight_render","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"__ultralight_update","path":"extensions/Ultralight/Ultralight.yy",},
@@ -95,6 +106,7 @@
         {"name":"ultralight_view_copy","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"ultralight_view_reload","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"ultralight_view_eval","path":"extensions/Ultralight/Ultralight.yy",},
+        {"name":"__ultralight_view_bind","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"__ultralight_event_mousemove","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"__ultralight_event_mousedown","path":"extensions/Ultralight/Ultralight.yy",},
         {"name":"__ultralight_event_mouseup","path":"extensions/Ultralight/Ultralight.yy",},

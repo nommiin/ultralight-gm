@@ -1,6 +1,6 @@
 #define GM_EXPORT extern "C" __declspec (dllexport)
 #define GM_BOOL(a) a >= 0.5 ? true : false
-#define KEY_COUNT 15
+#define KEY_COUNT 21
 
 #include <Ultralight/Ultralight.h>
 #include <AppCore/Platform.h>
@@ -8,13 +8,14 @@
 #include <windows.h>
 #include <wchar.h>
 #include <string.h>
+#include "async.h"
 
 using namespace ultralight;
 using namespace std;
 RefPtr<Renderer> renderer;
 vector<RefPtr<View>> views;
 vector<RefPtr<Session>> sessions;
-int keymap[18] = {
+int keymap[KEY_COUNT] = {
 	KeyCodes::GK_TAB,
 	KeyCodes::GK_LEFT,
 	KeyCodes::GK_RIGHT,
@@ -32,7 +33,10 @@ int keymap[18] = {
 	KeyCodes::GK_ESCAPE,
 	KeyCodes::GK_CONTROL,
 	KeyCodes::GK_LCONTROL,
-	KeyCodes::GK_RCONTROL
+	KeyCodes::GK_RCONTROL,
+	KeyCodes::GK_C,
+	KeyCodes::GK_V,
+	KeyCodes::GK_Z
 };
 
 GM_EXPORT double ultralight_init() {
@@ -139,6 +143,48 @@ GM_EXPORT char* ultralight_view_eval(double _view, char* _code) {
 	return 0;
 }
 
+JSValueRef ultralight_event_callback(JSContextRef ctx, JSObjectRef func, JSObjectRef thisObject, size_t argc, const JSValueRef arguments[], JSValueRef* exception) {
+	int mapCallback = CreateMap();
+	DsMapAddString(mapCallback, _strdup("event_type"), _strdup("ultralight_callback"));
+
+	JSStringRef prop_name = JSStringCreateWithUTF8CString("name");
+	JSValueRef func_prop = JSObjectGetProperty(ctx, func, prop_name, nullptr);
+	JSStringRelease(prop_name);
+	JSStringRef func_name = JSValueToStringCopy(ctx, func_prop, nullptr);
+
+	size_t buff_size = JSStringGetMaximumUTF8CStringSize(func_name);
+	if (buff_size > 0) {
+		char* buff = new char[buff_size];
+		JSStringGetUTF8CString(func_name, buff, buff_size);
+		DsMapAddString(mapCallback, _strdup("event_func"), buff);
+	}
+	JSStringRelease(func_name);
+	
+	for (int i = 0; i < argc; i++) {
+		//JSValue arg_get = arguments[i];
+		
+		//DsMapAddDouble(mapCallback, _strdup("arg_" + std::stoi), i);
+	}
+	CallAsync(mapCallback);
+	return JSValueMakeNull(ctx);
+}
+
+GM_EXPORT double ultralight_view_bind(double _view, char* _func) {
+	if (_view >= 0 && _view < views.size()) {
+		RefPtr<View> view = views.at(static_cast<uint32_t>(_view));
+		Ref<JSContext> ctx = view->LockJSContext();
+		JSContextRef ctx_ref = ctx.get();
+		JSStringRef func_name = JSStringCreateWithUTF8CString(_func);
+
+		JSObjectRef cb = JSObjectMakeFunctionWithCallback(ctx_ref, func_name, ultralight_event_callback);
+		JSObjectSetProperty(ctx_ref, JSContextGetGlobalObject(ctx_ref), func_name, cb, 0, 0);
+
+		JSStringRelease(func_name);
+		return 1;
+	}
+	return 0;
+}
+
 GM_EXPORT double ultralight_event_mousemove(double _view, double _mx, double _my) {
 	if (_view >= 0 && _view < views.size()) {
 		RefPtr<View> view = views.at(static_cast<uint32_t>(_view));
@@ -213,13 +259,3 @@ GM_EXPORT double ultralight_event_keyboardpress(double _view, char* _buffer) {
 	}
 	return 0;
 }
-/*
-GM_EXPORT char* ultralight_session_name(double _session) {
-	if (_session >= 0 && _session <= sessions.size()) {
-		String16 _str = sessions.at(static_cast<int>(_session))->name().utf16();
-		char* _char = new char[_str.length()];
-		WideCharToMultiByte(CP_UTF8, 0, _str.data(), -1, _char, strlen(_char), NULL, NULL);
-		return _char;
-	} else return nullptr;
-}
-*/
