@@ -259,3 +259,13 @@ GM_EXPORT double ultralight_event_keyboardpress(double _view, char* _buffer) {
 	}
 	return 0;
 }
+/*
+GM_EXPORT char* ultralight_session_name(double _session) {
+	if (_session >= 0 && _session <= sessions.size()) {
+		String16 _str = sessions.at(static_cast<int>(_session))->name().utf16();
+		char* _char = new char[_str.length()];
+		WideCharToMultiByte(CP_UTF8, 0, _str.data(), -1, _char, strlen(_char), NULL, NULL);
+		return _char;
+	} else return nullptr;
+}
+*/
