@@ -1,6 +1,6 @@
 #define GM_EXPORT extern "C" __declspec (dllexport)
 #define GM_BOOL(a) a >= 0.5 ? true : false
-#define KEY_COUNT 15
+#define KEY_COUNT 18
 
 #include <Ultralight/Ultralight.h>
 #include <AppCore/Platform.h>
