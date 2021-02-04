@@ -39,6 +39,12 @@ Here are some miscellaneous notes about using the Ultralight-GM API
 /// @argument {number} [_session=undefined] - The session to use for the view, retains localStorage and other things; not required
 /// @returns {struct} A struct containing different members relating to the newly created view
 
+/// @function ultralight_view_load( _view[.view], _code, _url )
+/// @description Loads the given code or URL into the view, NOTE that the _view argument must be a view index rather than a view struct
+/// @argument {number} _view[.view] - The index tied to the view
+/// @argument {string} _code - The HTML code or URL to load
+/// @argument {bool} _url - If the second "_code" argument is a URL (true) or not (false)
+
 /// @function ultralight_view_render( _view, _x, _y )
 /// @description Renders an Ultralight view, handles surface creation, copies the view bitmap if needed, and sets view passthrough shader to swap red and blue channels
 /// @argument {struct} _view - The struct for the view to be drawn
