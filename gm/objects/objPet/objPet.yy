@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "Example",
+    "path": "folders/Example.yy",
   },
   "resourceVersion": "1.0",
   "name": "objPet",

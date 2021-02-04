@@ -145,8 +145,8 @@
   "iosCocoaPodDependencies": "",
   "tvosCocoaPodDependencies": "",
   "parent": {
-    "name": "Extension",
-    "path": "folders/Extension.yy",
+    "name": "Ultralight",
+    "path": "folders/Ultralight.yy",
   },
   "resourceVersion": "1.2",
   "name": "Ultralight",

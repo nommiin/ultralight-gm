@@ -1,7 +1,7 @@
 {
   "resources": [
     {"id":{"name":"Ultralight","path":"extensions/Ultralight/Ultralight.yy",},"order":0,},
-    {"id":{"name":"ultralight_passthrough","path":"shaders/ultralight_passthrough/ultralight_passthrough.yy",},"order":0,},
+    {"id":{"name":"ultralight_passthrough","path":"shaders/ultralight_passthrough/ultralight_passthrough.yy",},"order":2,},
     {"id":{"name":"objExample","path":"objects/objExample/objExample.yy",},"order":0,},
     {"id":{"name":"UltralightGM","path":"scripts/UltralightGM/UltralightGM.yy",},"order":1,},
     {"id":{"name":"objPet","path":"objects/objPet/objPet.yy",},"order":1,},
@@ -26,9 +26,8 @@
     {"roomId":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},},
   ],
   "Folders": [
-    {"folderPath":"folders/Objects.yy","order":12,"resourceVersion":"1.0","name":"Objects","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Shaders.yy","order":13,"resourceVersion":"1.0","name":"Shaders","tags":[],"resourceType":"GMFolder",},
-    {"folderPath":"folders/Extension.yy","order":14,"resourceVersion":"1.0","name":"Extension","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Example.yy","order":12,"resourceVersion":"1.0","name":"Example","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Ultralight.yy","order":15,"resourceVersion":"1.0","name":"Ultralight","tags":[],"resourceType":"GMFolder",},
   ],
   "AudioGroups": [
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},
