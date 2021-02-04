@@ -140,6 +140,8 @@ function ultralight_update( _mx, _my ) {
 			else if (mouse_check_button_released(mb_left) == true) __ultralight_event_mouseup(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Left);
 			if (mouse_check_button_pressed(mb_right) == true) __ultralight_event_mousedown(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Right);
 			else if (mouse_check_button_released(mb_right) == true) __ultralight_event_mouseup(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Right);
+			if (mouse_wheel_up() == true) __ultralight_event_wheelup(_view.view);
+			else if (mouse_wheel_down() == true) __ultralight_event_wheeldown(_view.view);
 			if (_mx != _view.mouse[0] || _my != _view.mouse[1]) {
 				__ultralight_event_mousemove(_view.view, _viewmx, _viewmy);
 				_view.mouse[0] = _mx;

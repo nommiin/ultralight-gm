@@ -1,7 +1,6 @@
 ultralight_render();
 
-ultralight_view_render(test, 16, 32);
-ultralight_view_render(test2, 480, 72);
+ultralight_view_render(test, 8, 8);
 
 draw_set_halign(fa_right);
 draw_set_valign(fa_top);

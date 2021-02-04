@@ -4,10 +4,13 @@
 
 #include <Ultralight/Ultralight.h>
 #include <AppCore/Platform.h>
+#include <JavaScriptCore/JavaScript.h>
 #include <vector>
 #include <windows.h>
 #include <wchar.h>
 #include <string.h>
+#include <string>
+#include <iostream>
 #include "async.h"
 
 using namespace ultralight;
@@ -38,6 +41,48 @@ int keymap[KEY_COUNT] = {
 	KeyCodes::GK_V,
 	KeyCodes::GK_Z
 };
+
+char* JSStringToCString(JSStringRef _str) {
+	size_t buff_size = JSStringGetMaximumUTF8CStringSize(_str);
+	if (buff_size > 0) {
+		char* buff = new char[buff_size];
+		JSStringGetUTF8CString(_str, buff, buff_size);
+		return buff;
+	}
+	return nullptr;
+}
+
+std::string JSValueToString(JSContextRef _ctx, JSValueRef _val) {
+	std::string str_val("");
+	switch (JSValueGetType(_ctx, _val)) {
+		case JSType::kJSTypeNumber:
+		{
+			str_val = std::to_string(JSValueToNumber(_ctx, _val, nullptr));
+			break;
+		}
+
+		case JSType::kJSTypeString:
+		{
+			JSStringRef arg_ref = JSValueToStringCopy(_ctx, _val, nullptr);
+			str_val = "\"" + std::string(JSStringToCString(arg_ref)) + "\"";
+			JSStringRelease(arg_ref);
+			break;
+		}
+
+		case JSType::kJSTypeNull:
+		{
+			str_val = "null";
+			break;
+		}
+
+		case JSType::kJSTypeUndefined:
+		{
+			str_val = "undefined";
+			break;
+		}
+	}
+	return str_val;
+}
 
 GM_EXPORT double ultralight_init() {
 	// Setup default configuration
@@ -144,27 +189,30 @@ GM_EXPORT char* ultralight_view_eval(double _view, char* _code) {
 }
 
 JSValueRef ultralight_event_callback(JSContextRef ctx, JSObjectRef func, JSObjectRef thisObject, size_t argc, const JSValueRef arguments[], JSValueRef* exception) {
+	// Create map and add "event_type" string
 	int mapCallback = CreateMap();
 	DsMapAddString(mapCallback, _strdup("event_type"), _strdup("ultralight_callback"));
 
+	// Get "name" property from calling function and store in map
 	JSStringRef prop_name = JSStringCreateWithUTF8CString("name");
 	JSValueRef func_prop = JSObjectGetProperty(ctx, func, prop_name, nullptr);
 	JSStringRelease(prop_name);
 	JSStringRef func_name = JSValueToStringCopy(ctx, func_prop, nullptr);
-
-	size_t buff_size = JSStringGetMaximumUTF8CStringSize(func_name);
-	if (buff_size > 0) {
-		char* buff = new char[buff_size];
-		JSStringGetUTF8CString(func_name, buff, buff_size);
-		DsMapAddString(mapCallback, _strdup("event_func"), buff);
+	char* func_cstr = JSStringToCString(func_name);
+	if (func_cstr != nullptr) {
+		DsMapAddString(mapCallback, _strdup("event_func"), func_cstr);
 	}
 	JSStringRelease(func_name);
-	
+
+	// Build an array of arguments and store in map
+	std::string arg_data("{\"data\": [");
 	for (int i = 0; i < argc; i++) {
-		//JSValue arg_get = arguments[i];
-		
-		//DsMapAddDouble(mapCallback, _strdup("arg_" + std::stoi), i);
+		arg_data += JSValueToString(ctx, arguments[i]) + (i < argc - 1 ? ", " : "");
 	}
+	arg_data += "]}";
+	char* arg_str = new char[arg_data.length() + 1];
+	strcpy_s(arg_str, arg_data.length() + 1, arg_data.c_str());
+	DsMapAddString(mapCallback, _strdup("event_arguments"), arg_str);
 	CallAsync(mapCallback);
 	return JSValueMakeNull(ctx);
 }
@@ -227,6 +275,20 @@ GM_EXPORT double ultralight_event_mouseup(double _view, double _mx, double _my, 
 	return 0;
 }
 
+GM_EXPORT double ultralight_event_wheelup(double _view) {
+	if (_view >= 0 && _view < views.size()) {
+		/*RefPtr<View> view = views.at(static_cast<uint32_t>(_view));
+		MouseEvent evt;
+		evt.type = MouseEvent::k
+		evt.x = static_cast<int>(_mx);
+		evt.y = static_cast<int>(_my);
+		evt.button = static_cast<MouseEvent::Button>(_button);
+		view->FireMouseEvent(evt);*/
+		return 1;
+	}
+	return 0;
+}
+
 GM_EXPORT double ultralight_event_keyboardinput(double _view, char* _input) {
 	if (_view >= 0 && _view < views.size()) {
 		RefPtr<View> view = views.at(static_cast<uint32_t>(_view));
@@ -259,13 +321,3 @@ GM_EXPORT double ultralight_event_keyboardpress(double _view, char* _buffer) {
 	}
 	return 0;
 }
-/*
-GM_EXPORT char* ultralight_session_name(double _session) {
-	if (_session >= 0 && _session <= sessions.size()) {
-		String16 _str = sessions.at(static_cast<int>(_session))->name().utf16();
-		char* _char = new char[_str.length()];
-		WideCharToMultiByte(CP_UTF8, 0, _str.data(), -1, _char, strlen(_char), NULL, NULL);
-		return _char;
-	} else return nullptr;
-}
-*/
