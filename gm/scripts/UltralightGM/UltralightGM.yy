@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Ultralight-Test",
-    "path": "Ultralight-Test.yyp",
+    "name": "Extension",
+    "path": "folders/Extension.yy",
   },
   "resourceVersion": "1.0",
   "name": "UltralightGM",

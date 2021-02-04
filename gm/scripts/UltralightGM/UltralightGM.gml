@@ -73,7 +73,6 @@ function ultralight_view_render( _view, _x, _y ) {
 	
 	_view.offset[0] = _x;
 	_view.offset[1] = _y;
-	draw_rectangle_colour(_x, _y, _x + _view.width, _y + _view.height, c_red, c_red, c_red, c_red, true);
 	shader_set(ultralight_passthrough);
 	draw_surface(_view.surface, _x, _y);
 	shader_reset();
@@ -90,12 +89,8 @@ function ultralight_view_resize( _view, _width, _height ) {
 	}
 }
 
-/// @function ultralight_view_focus( _view, _focus, [_removeall=true] )
-/// @argument {real} _view - The view to modify
-/// @argument {bool} _focus - If the view should be focused or not
-/// @argument {bool} [_removeall=true] - If all views focused should be unfocused
 function ultralight_view_focus( _view, _focus, _removeall ) {
-	if (_removeall == undefined || _removeall == true) {
+	if ((_removeall == undefined && __ultralight_autofocus == true) || _removeall == true) {
 		for(var i = 0, _i = array_length(__ultralight_views); i < _i; i++) {
 			var _view_get = __ultralight_views[i];
 			__ultralight_view_focus(_view_get.view, false);
@@ -119,7 +114,7 @@ function ultralight_update( _mx, _my ) {
 		if (keyboard_check_pressed(__ultralight_keylist[i]) == true) _key = 1;
 		if (keyboard_check_released(__ultralight_keylist[i]) == true) _key = 2;
 		buffer_write(__ultralight_keybuffer, buffer_u8, _key ? 1 : 0);
-		if (_key == true) _keypress = true;
+		if (_key != 0) _keypress = true;
 	}
 	
 	for(var i = 0, _i = array_length(__ultralight_views); i < _i; i++) {
@@ -140,8 +135,6 @@ function ultralight_update( _mx, _my ) {
 			else if (mouse_check_button_released(mb_left) == true) __ultralight_event_mouseup(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Left);
 			if (mouse_check_button_pressed(mb_right) == true) __ultralight_event_mousedown(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Right);
 			else if (mouse_check_button_released(mb_right) == true) __ultralight_event_mouseup(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Right);
-			if (mouse_wheel_up() == true) __ultralight_event_wheelup(_view.view);
-			else if (mouse_wheel_down() == true) __ultralight_event_wheeldown(_view.view);
 			if (_mx != _view.mouse[0] || _my != _view.mouse[1]) {
 				__ultralight_event_mousemove(_view.view, _viewmx, _viewmy);
 				_view.mouse[0] = _mx;
@@ -158,30 +151,6 @@ function ultralight_update( _mx, _my ) {
 				__ultralight_event_keyboardpress(_view.view, buffer_get_address(__ultralight_keybuffer));	
 			}
 		}
-		/*
-		if (mouse_check_button_pressed(mb_left) == true) {
-			__ultralight_event_mousedown(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Left);
-			if (__ultralight_autofocus == true && _view.focus == false) {
-				if (point_in_rectangle(_mx, _my, _view.offset[0], _view.offset[1], _view.offset[0] + _view.width, _view.offset[1] + _view.height) == true) {
-					ultralight_view_focus(_view, true);
-					show_debug_message("focused view " + string(_view.view));
-				}
-			}
-		} else if (mouse_check_button_released(mb_left) == true) __ultralight_event_mouseup(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Left);
-		if (mouse_check_button_pressed(mb_right) == true) __ultralight_event_mousedown(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Right);
-		else if (mouse_check_button_released(mb_right) == true) __ultralight_event_mouseup(_view.view, _viewmx, _viewmy, UltralightButton.kButton_Right);
-		if (_mx != _view.mouse[0] || _my != _view.mouse[1]) {
-			__ultralight_event_mousemove(_view.view, _viewmx, _viewmy);
-			_view.mouse[0] = _mx;
-			_view.mouse[1] = _my;	
-		}
-		
-		// Keyboard Input
-		if (keyboard_string != "") {
-			__ultralight_event_keyboardinput(_view.view, keyboard_string);
-			keyboard_string = "";
-		}
-		*/
 	}
 	__ultralight_update();
 }

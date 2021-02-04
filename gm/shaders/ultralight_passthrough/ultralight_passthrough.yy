@@ -1,8 +1,8 @@
 {
   "type": 1,
   "parent": {
-    "name": "Ultralight-Test",
-    "path": "Ultralight-Test.yyp",
+    "name": "Shaders",
+    "path": "folders/Shaders.yy",
   },
   "resourceVersion": "1.0",
   "name": "ultralight_passthrough",

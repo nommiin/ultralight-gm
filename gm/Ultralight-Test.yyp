@@ -1,10 +1,11 @@
 {
   "resources": [
-    {"id":{"name":"Ultralight","path":"extensions/Ultralight/Ultralight.yy",},"order":4,},
-    {"id":{"name":"ultralight_passthrough","path":"shaders/ultralight_passthrough/ultralight_passthrough.yy",},"order":7,},
-    {"id":{"name":"Object1","path":"objects/Object1/Object1.yy",},"order":9,},
-    {"id":{"name":"UltralightGM","path":"scripts/UltralightGM/UltralightGM.yy",},"order":10,},
-    {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":1,},
+    {"id":{"name":"Ultralight","path":"extensions/Ultralight/Ultralight.yy",},"order":0,},
+    {"id":{"name":"ultralight_passthrough","path":"shaders/ultralight_passthrough/ultralight_passthrough.yy",},"order":0,},
+    {"id":{"name":"objExample","path":"objects/objExample/objExample.yy",},"order":0,},
+    {"id":{"name":"UltralightGM","path":"scripts/UltralightGM/UltralightGM.yy",},"order":1,},
+    {"id":{"name":"objPet","path":"objects/objPet/objPet.yy",},"order":1,},
+    {"id":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},"order":1,},
   ],
   "Options": [
     {"name":"HTML5","path":"options/html5/options_html5.yy",},
@@ -22,9 +23,13 @@
     "children": [],
   },
   "RoomOrderNodes": [
-    {"roomId":{"name":"Room1","path":"rooms/Room1/Room1.yy",},},
+    {"roomId":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},},
   ],
-  "Folders": [],
+  "Folders": [
+    {"folderPath":"folders/Objects.yy","order":12,"resourceVersion":"1.0","name":"Objects","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Shaders.yy","order":13,"resourceVersion":"1.0","name":"Shaders","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Extension.yy","order":14,"resourceVersion":"1.0","name":"Extension","tags":[],"resourceType":"GMFolder",},
+  ],
   "AudioGroups": [
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},
   ],
