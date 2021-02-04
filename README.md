@@ -7,6 +7,19 @@ An implementation of the Ultralight library for GameMaker Studio 2.3 (x64)
 3. Call `ultralight_update( _mousex, _mousey )` in the step event to pass mouse+keyboard inputs and `ultralight_render()` in the draw event
 4. Use `ultralight_view_draw( _view, _x, _y )` to draw the view
 
+# Notes
+Here are some miscellaneous notes about using the Ultralight-GM API
+- **This is an x64 extension, meaning you must enable the 64-bit Windows runner to use it**
+- There are five internal globalvars used for various reasons outlined below:
+  - \_\_ultralight_views: An array containing all views created using ultralight_view_create
+  - \_\_ultralight_autofocus: A boolean value used to determine if view focus should be automatically determined by checking the left mouse button and the position of the mouse
+  - \_\_ultralight_binding: A `ds_map` with keys (JS function name) containing tuples for each method and view struct for callbacks
+  - \_\_ultralight_keylist: An array containing every key to check when calling `ultralight_update`, if changed be sure to change the `KEY_COUNT` macro in `main.cpp` for the DLL
+  - \_\_ultralight_keybuffer: A buffer that is `array_length(__ultralight_keylist)` bytes long, containing 1 byte for each key. Sent to the DLL using `__ultralight_event_keyboardpress`
+- Note that some internal functions (namely `ultralight_view_eval`) take the view index instead of the view struct
+- The `ultralight_passthrough` shader must be used when manually rendering view surfaces due to GameMaker's swapped red and blue channels in surfaces.
+- Both `ultralight_view_copy` and `__ultralight_event_keyboardpress` functions use **buffer addresses** instead of buffer indices
+
 # Functions
 ### High-Level Functions:
 ```js
@@ -106,15 +119,3 @@ These are considered low level functions because most are used by the extension 
 /// @argument {number} _view[.view] - The index tied to the view
 /// @argument {pointer} _bufferaddr - The address to the buffer containing keyboard input states, buffer must be KEY_COUNT bytes long and contain either 0 (none), 1 (pressed), or 2 (released)
 ```
-
-# Notes
-Here are some miscellaneous notes about using the Ultralight-GM API
-- There are five internal globalvars used for various reasons outlined below:
-  - \_\_ultralight_views: An array containing all views created using ultralight_view_create
-  - \_\_ultralight_autofocus: A boolean value used to determine if view focus should be automatically determined by checking the left mouse button and the position of the mouse
-  - \_\_ultralight_binding: A `ds_map` with keys (JS function name) containing tuples for each method and view struct for callbacks
-  - \_\_ultralight_keylist: An array containing every key to check when calling `ultralight_update`, if changed be sure to change the `KEY_COUNT` macro in `main.cpp` for the DLL
-  - \_\_ultralight_keybuffer: A buffer that is `array_length(__ultralight_keylist)` bytes long, containing 1 byte for each key. Sent to the DLL using `__ultralight_event_keyboardpress`
-- Note that some internal functions (namely `ultralight_view_eval`) take the view index instead of the view struct
-- The `ultralight_passthrough` shader must be used when manually rendering view surfaces due to GameMaker's swapped red and blue channels in surfaces.
-- Both `ultralight_view_copy` and `__ultralight_event_keyboardpress` functions use **buffer addresses** instead of buffer indices
