@@ -1,6 +1,9 @@
 # ultralight-gm
 An implementation of the Ultralight library for GameMaker Studio 2.3 (x64)
 
+# Branch (gpu)
+This branch will be used to test implementing a custom GPU renderer (instead of the software renderer Ultralight provides), this should provided improved performance and fix issues related to having large views.
+
 # Usage
 1. Create a view using `ultralight_view_create( _width, _height, _transparent, [_session=undefined] )`
 2. Load HTML or a URL using `ultralight_view_load( _view[.view], _str, _url )`
